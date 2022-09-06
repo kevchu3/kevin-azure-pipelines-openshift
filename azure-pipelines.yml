@@ -1,0 +1,58 @@
+trigger:
+- main
+
+pool:
+  name: Default
+
+variables:
+  project-name-dev: 'my-dev'
+  project-name-uat: 'my-uat'
+  image-name: 'kevin-dotnet'
+
+stages:
+- stage: Build
+  displayName: Build and Push Image
+  jobs:
+  - job: BuildAndPushJob
+    displayName: Build and Push Job
+    steps:
+    - task: Docker@2
+      displayName: 'Build Docker image'
+      inputs:
+        command: 'build'
+        containerRegistry: 'kevin ROSA internal registry'
+        buildContext: 'App'
+        repository: '$(project-name-dev)/$(image-name)'
+        Dockerfile: 'Dockerfile'
+        tags: $(Build.BuildId)
+    - task: Docker@2
+      displayName: 'Push Docker image to OpenShift internal registry'
+      inputs:
+        command: 'push'
+        containerRegistry: 'kevin ROSA internal registry'
+        repository: '$(project-name-dev)/$(image-name)'
+        tags: $(Build.BuildId)
+    - task: PublishPipelineArtifact@1
+      displayName: Publish pipeline artifacts
+      inputs:
+        targetPath: '$(Build.SourcesDirectory)/manifests'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
+
+- stage: Deploy
+  displayName: Deploy to DEV
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: DeployDevJob
+    displayName: Deploy to DEV Job
+    steps:
+    - task: KubernetesManifest@0
+      displayName: Deploy to Kubernetes cluster
+      inputs:
+        action: deploy
+        kubernetesServiceConnection: 'kevin ROSA k8s cluster'
+        namespace: '$(project-name-dev)'
+        manifests: |
+          $(Build.SourcesDirectory)/manifests/kevin-dotnet.deployment.yaml
+        containers: 'image-registry.openshift-image-registry.svc:5000/$(project-name-dev)/$(image-name):$(Build.BuildId)'
