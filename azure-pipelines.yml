@@ -54,5 +54,5 @@ stages:
         kubernetesServiceConnection: 'kevin ROSA k8s cluster'
         namespace: '$(project-name-dev)'
         manifests: |
-          $(Build.SourcesDirectory)/manifests/kevin-dotnet.deployment.yaml
+          $(Build.SourcesDirectory)/manifests/*.yaml
         containers: 'image-registry.openshift-image-registry.svc:5000/$(project-name-dev)/$(image-name):$(Build.BuildId)'
