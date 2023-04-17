@@ -48,7 +48,7 @@ stages:
     displayName: Deploy to DEV Job
     steps:
     - task: KubernetesManifest@0
-      displayName: Deploy to Kubernetes cluster
+      displayName: Deploy to Openshift cluster
       inputs:
         action: deploy
         kubernetesServiceConnection: 'kubernetes-api'
