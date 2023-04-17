@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: kevin-dotnet
-          image: image-registry.openshift-image-registry.svc:5000/my-dev/kevin-dotnet
+          image: image-registry.openshift-image-registry.svc:5000/first-app/kevin-dotnet
           ports:
             - containerPort: 8080
 
