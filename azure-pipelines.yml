@@ -7,7 +7,7 @@ pool:
 variables:
   project-name-dev: 'my-dev'
   project-name-uat: 'my-uat'
-  image-name: 'csalatam1-dotnet'
+  image-name: 'kevin-dotnet'
 
 stages:
 - stage: Build
