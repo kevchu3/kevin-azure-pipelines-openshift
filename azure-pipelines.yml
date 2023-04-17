@@ -5,7 +5,7 @@ pool:
   name: csalatam1-agentPool
 
 variables:
-  project-name-dev: 'my-dev'
+  project-name-dev: 'first-app'
   project-name-uat: 'my-uat'
   image-name: 'kevin-dotnet'
 
