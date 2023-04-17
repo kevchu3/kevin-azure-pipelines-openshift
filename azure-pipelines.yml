@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  name: Default
+  name: csalatam1-agentPool
 
 variables:
   project-name-dev: 'my-dev'
@@ -20,7 +20,7 @@ stages:
       displayName: 'Build Docker image'
       inputs:
         command: 'build'
-        containerRegistry: 'csalatam1 ROSA internal registry'
+        containerRegistry: 'default-route-openshift-image-registry.apps.rosa-hqwv7.w16p.p1.openshiftapps.com'
         buildContext: 'App'
         repository: '$(project-name-dev)/$(image-name)'
         Dockerfile: 'Dockerfile'
@@ -29,7 +29,7 @@ stages:
       displayName: 'Push Docker image to OpenShift internal registry'
       inputs:
         command: 'push'
-        containerRegistry: 'csalatam1 ROSA internal registry'
+        containerRegistry: 'default-route-openshift-image-registry.apps.rosa-hqwv7.w16p.p1.openshiftapps.com'
         repository: '$(project-name-dev)/$(image-name)'
         tags: $(Build.BuildId)
     - task: PublishPipelineArtifact@1
