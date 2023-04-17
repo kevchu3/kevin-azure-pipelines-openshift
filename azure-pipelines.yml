@@ -6,7 +6,7 @@ pool:
 
 variables:
   project-name-dev: 'first-app'
-  project-name-uat: 'my-uat1'
+  project-name-uat: 'my-uat2'
   image-name: 'kevin-dotnet'
 
 stages:
