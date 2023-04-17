@@ -51,7 +51,7 @@ stages:
       displayName: Deploy to Kubernetes cluster
       inputs:
         action: deploy
-        kubernetesServiceConnection: 'csalatam1-svc-connection'
+        kubernetesServiceConnection: 'kubernetes-api'
         namespace: '$(project-name-dev)'
         manifests: |
           $(Build.SourcesDirectory)/manifests/*.yaml
