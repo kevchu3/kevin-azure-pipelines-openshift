@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  name: csalatam1-agentPool
+  name: chilecompra-agent
 
 variables:
   project-name-dev: 'first-app'
