@@ -1,8 +1,9 @@
 trigger:
-- main
+- coelsa
 
 pool:
   name: ocppool
+
 
 variables:
   project-name-dev: 'first-app'
