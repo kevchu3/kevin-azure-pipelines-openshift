@@ -21,7 +21,7 @@ stages:
       displayName: 'Build Docker image'
       inputs:
         command: 'build'
-        containerRegistry: 'registry'
+        containerRegistry: 'registry-openshift'
         buildContext: 'App'
         repository: '$(project-name-dev)/$(image-name)'
         Dockerfile: 'Dockerfile'
@@ -30,7 +30,7 @@ stages:
       displayName: 'Push Docker image to OpenShift internal registry'
       inputs:
         command: 'push'
-        containerRegistry: 'registry'
+        containerRegistry: 'registry-openshift'
         repository: '$(project-name-dev)/$(image-name)'
         tags: $(Build.BuildId)
     - task: PublishPipelineArtifact@1
