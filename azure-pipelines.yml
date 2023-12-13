@@ -1,5 +1,5 @@
 trigger:
-- main
+- coelsa
 
 pool:
   name: ocppool
