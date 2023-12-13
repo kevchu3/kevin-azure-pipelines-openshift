@@ -52,7 +52,7 @@ stages:
       displayName: Deploy to Openshift cluster
       inputs:
         action: deploy
-        kubernetesServiceConnection: 'kubernetes-api'
+        kubernetesServiceConnection: 'aro-kubernetes'
         namespace: '$(project-name-dev)'
         manifests: |
           $(Build.SourcesDirectory)/manifests/*.yaml
