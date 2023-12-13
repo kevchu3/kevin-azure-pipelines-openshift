@@ -1,0 +1,59 @@
+trigger:
+- dev
+
+pool:
+  name: ocppool
+
+
+variables:
+  project-name-dev: 'first-app'
+  project-name-uat: 'my-uat2'
+  image-name: 'kevin-dotnet'
+
+stages:
+- stage: Build
+  displayName: Build and Push Image
+  jobs:
+  - job: BuildAndPushJob
+    displayName: Build and Push Job
+    steps:
+    - task: Docker@2
+      displayName: 'Build Docker image'
+      inputs:
+        command: 'build'
+        containerRegistry: 'quay'
+        buildContext: 'App'
+        repository: 'coelsa/$(project-name-dev)/$(image-name)'
+        Dockerfile: 'Dockerfile'
+        tags: $(Build.BuildId)
+    - task: Docker@2
+      displayName: 'Push Docker image to OpenShift internal registry'
+      inputs:
+        command: 'push'
+        containerRegistry: 'quay'
+        repository: 'coelsa/$(project-name-dev)/$(image-name)'
+        tags: $(Build.BuildId)
+    - task: PublishPipelineArtifact@1
+      displayName: Publish pipeline artifacts
+      inputs:
+        targetPath: '$(Build.SourcesDirectory)/manifests'
+        artifact: 'manifests'
+        publishLocation: 'pipeline'
+
+- stage: Deploy
+  displayName: Deploy to DEV
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: DeployDevJob
+    displayName: Deploy to DEV Job
+    steps:
+    - task: KubernetesManifest@0
+      displayName: Deploy to Openshift cluster
+      inputs:
+        action: deploy
+        kubernetesServiceConnection: 'aro-kubernetes'
+        namespace: '$(project-name-dev)'
+        manifests: |
+          $(Build.SourcesDirectory)/manifests/*.yaml
+        containers: 'https://quay-registry.apps.jsj26ubv.eastus.aroapp.io/coelsa/$(project-name-dev)/$(image-name):$(Build.BuildId)'
