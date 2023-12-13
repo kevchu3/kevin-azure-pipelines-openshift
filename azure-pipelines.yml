@@ -1,8 +1,8 @@
 trigger:
-- main
+- coelsa
 
 pool:
-  name: chilecompra-agent
+  name: coelsa
 
 variables:
   project-name-dev: 'first-app'
